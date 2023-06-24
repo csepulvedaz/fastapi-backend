@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fastapi"
+name = "api"
 version = "0.1.0"
 description = ""
 authors = ["Camilo J Sepulveda <csepulveda@smarthop.co>"]
@@ -7,6 +7,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+fastapi = "0.96.0"
+uvicorn = "0.22.0"
+python-dotenv = "^1.0.0"
 prisma = "^0.9.0"
 
 [tool.poetry.dev-dependencies]
