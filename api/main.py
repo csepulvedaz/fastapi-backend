@@ -41,4 +41,5 @@ async def shutdown():
 
 
 app.include_router(root_routes)
+app.include_router(auth_routes)
 app.include_router(user_routes)

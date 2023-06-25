@@ -1,8 +1,11 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from typing import List
 
 # Models
 from api.models.user_models import User
+
+# Utils
+from api.utils.auth_utils import verify_token
 
 # Controllers
 from api.controllers.user_controller import (
@@ -13,7 +16,7 @@ from api.controllers.user_controller import (
     delete_user_by_id,
 )
 
-router = APIRouter(prefix="/users", tags=["User"])
+router = APIRouter(prefix="/users", tags=["User"], dependencies=[Depends(verify_token)])
 
 router.post("/", response_model=User)(add_user)
 router.get("/", response_model=List[User])(get_all_users)
