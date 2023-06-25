@@ -3,7 +3,7 @@ from datetime import (
     datetime,
     timedelta,
 )
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from passlib.context import CryptContext
@@ -14,6 +14,7 @@ from api.core.config import settings
 
 # Constants
 from api.constants.auth_constants import ALGORITHM
+from api.constants.error_constants import *
 
 
 logger = logging.getLogger("api")
@@ -56,13 +57,8 @@ def verify_token(token: str = Depends(oauth2_scheme)):
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid authentication credentials",
-            )
+            INVALID_TOKEN_ERROR.raise_exception()
     except JWTError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-        )
+        INVALID_TOKEN_ERROR.raise_exception()
+
     return True

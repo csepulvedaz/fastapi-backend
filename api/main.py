@@ -1,8 +1,12 @@
 from logging.config import dictConfig
 
 from fastapi import FastAPI
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
+
+# Constants
+from api.constants.error_constants import VALIDATION_ERROR
 
 # Config
 from api.core.config import (
@@ -28,6 +32,11 @@ app.add_middleware(
 )
 
 app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(_, exc: RequestValidationError):
+    return VALIDATION_ERROR.send(validation_error=exc)
 
 
 @app.on_event("startup")

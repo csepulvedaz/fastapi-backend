@@ -16,6 +16,8 @@ from api.services.user_services import (
 # Utils
 from api.utils.auth_utils import get_password_hash
 
+# Constants
+from api.constants.error_constants import *
 
 logger = logging.getLogger("api")
 
@@ -28,7 +30,7 @@ async def add_user(user: UserCreate = Depends()):
         newUser = await create_user(data)
         return User(**newUser.dict())
     except Exception as e:
-        raise e
+        USER_CREATE_ERROR.raise_exception(exception=e)
 
 
 async def get_all_users():
@@ -36,7 +38,7 @@ async def get_all_users():
         users = await get_users()
         return [User(**user.dict()) for user in users]
     except Exception as e:
-        raise e
+        USERS_GETTING_ERROR.raise_exception(exception=e)
 
 
 async def get_user_by_id(user_id: str):
@@ -44,7 +46,7 @@ async def get_user_by_id(user_id: str):
         user = await get_user(user_id)
         return User(**user.dict())
     except Exception as e:
-        raise e
+        USER_GETTING_ERROR.raise_exception(exception=e)
 
 
 async def update_user_by_id(user_id: str, user: UserUpdate = Depends()):
@@ -57,11 +59,11 @@ async def update_user_by_id(user_id: str, user: UserUpdate = Depends()):
         updatedUser = await update_user(user_id, data)
         return User(**updatedUser.dict())
     except Exception as e:
-        raise e
+        USER_UPDATING_ERROR.raise_exception(exception=e)
 
 
 async def delete_user_by_id(user_id: str):
     try:
         await delete_user(user_id)
     except Exception as e:
-        raise e
+        USER_DELETING_ERROR.raise_exception(exception=e)
