@@ -31,8 +31,11 @@ black:
 run: ## run project in localhost web server
 	poetry run uvicorn api.main:app --reload
 
-generate:
+prisma-generate:
 	poetry run prisma generate
+
+prisma-push:
+	poetry run prisma db push
 
 update-version:
 	poetry run python api/utils/update_version.py
